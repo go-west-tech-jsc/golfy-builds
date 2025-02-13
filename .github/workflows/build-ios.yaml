@@ -41,5 +41,17 @@ jobs:
         run: pnpm install
 
       - name: Build Golfy Alpha
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-build -e development-store --local --non-interactive
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-local:development-store
         working-directory: apps/expo
+        if: github.event.inputs.channel == 'development'
+      
+      - name: Build Golfy Beta
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-local:preview
+        working-directory: apps/expo
+        if: github.event.inputs.channel == 'preview'
+      
+      - name: Build Golfy
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-local:production
+        working-directory: apps/expo
+        if: github.event.inputs.channel == 'production'
+
