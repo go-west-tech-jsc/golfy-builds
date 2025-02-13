@@ -36,6 +36,9 @@ jobs:
   
       - name: Install Expo CLI
         run: pnpm add -g expo-cli eas-cli
+      
+      - name: Install dependencies
+        run: pnpm install    
 
       - name: Build iOS with eas profile development-store
         run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-build -e development-store --local --non-interactive
