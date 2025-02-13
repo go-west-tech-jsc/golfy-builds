@@ -18,19 +18,22 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: ${{ secrets.CHECKOUT_REPOSITORY }}
           ref: ${{ github.event.inputs.channel == 'development' && 'develop' || github.event.inputs.channel == 'preview' && 'staging' || github.event.inputs.channel == 'production' && 'main' }}
           ssh-key: ${{ secrets.CHECKOUT_SSH_KEY }}
-      
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
           cache: 'pnpm'
   
       - name: Install Expo CLI
