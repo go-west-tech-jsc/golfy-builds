@@ -37,5 +37,5 @@ jobs:
       - name: Install Expo CLI
         run: pnpm add -g expo-cli eas-cli
 
-      - name: Authenticate with EAS
-        run: eas login --token ${{ secrets.EXPO_EAS_TOKEN }}
+      - name: Build iOS with eas profile development-store
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-build -e development-store --local --non-interactive
