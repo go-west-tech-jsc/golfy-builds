@@ -36,3 +36,6 @@ jobs:
   
       - name: Install Expo CLI
         run: pnpm add -g expo-cli eas-cli
+
+      - name: Authenticate with EAS
+        run: eas login --token ${{ secrets.EXPO_EAS_TOKEN }}
