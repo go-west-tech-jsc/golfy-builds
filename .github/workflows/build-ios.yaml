@@ -41,6 +41,7 @@ jobs:
         run: pnpm install
       
       - run: pnpm run
+        working-directory: apps/expo
 
       - name: Build iOS with eas profile development-store
         run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-build -e development-store --local --non-interactive
