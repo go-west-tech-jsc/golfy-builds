@@ -54,5 +54,5 @@ jobs:
         run: pnpm install
 
       - name: Build Android
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=android --profile=${{ github.event.inputs.channel }} --build-logger-level=${{ github.event.inputs.build_logger_level }} --local --output=App.apk --non-interactive
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=android --profile=${{ github.event.inputs.channel }} --build-logger-level=${{ github.event.inputs.build_logger_level }} --local --output=app-release.aab --non-interactive
         working-directory: apps/expo

@@ -54,13 +54,13 @@ jobs:
         run: pnpm install
 
       - name: Build iOS
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=ios --profile=${{ github.event.inputs.channel }} --build-logger-level=${{ github.event.inputs.build_logger_level }} --local --output=App.ipa --non-interactive
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=ios --profile=${{ github.event.inputs.channel }} --build-logger-level=${{ github.event.inputs.build_logger_level }} --local --output=app-release.ipa --non-interactive
         working-directory: apps/expo
 
       - name: Upload app to TestFlight
         uses: apple-actions/upload-testflight-build@v1
         with:
-          app-path: apps/expo/App.ipa
+          app-path: apps/expo/app-release.ipa
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
