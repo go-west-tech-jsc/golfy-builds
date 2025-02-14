@@ -1,0 +1,45 @@
+name: Build Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        type: choice
+        description: "Channel"
+        required: true
+        default: "development"
+        options:
+          - "development"
+          - "preview"
+          - "production"
+
+jobs:
+  expo-updates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.CHECKOUT_REPOSITORY }}
+          ref: ${{ github.event.inputs.channel == 'development' && 'develop' || github.event.inputs.channel == 'preview' && 'staging' || github.event.inputs.channel == 'production' && 'main' }}
+          ssh-key: ${{ secrets.CHECKOUT_SSH_KEY }}
+  
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+  
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+  
+      - name: Install CLI
+        run: pnpm add -g eas-cli
+      
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Android
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=android --profile=${{ github.event.inputs.channel }} --build-logger-level=warn --local --output=App.apk --non-interactive
+        working-directory: apps/expo
