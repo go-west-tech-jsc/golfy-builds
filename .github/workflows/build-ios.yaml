@@ -5,53 +5,31 @@ on:
     inputs:
       channel:
         type: choice
-        description: 'Channel'
+        description: "Channel"
         required: true
-        default: 'development'
+        default: "development"
         options:
-          - 'development'
-          - 'preview'
-          - 'production'
+          - "development"
+          - "preview"
+          - "production"
 
 jobs:
   build-ios:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-expo-builder/action.yaml
         with:
-          repository: ${{ secrets.CHECKOUT_REPOSITORY }}
-          ref: ${{ github.event.inputs.channel == 'development' && 'develop' || github.event.inputs.channel == 'preview' && 'staging' || github.event.inputs.channel == 'production' && 'main' }}
-          ssh-key: ${{ secrets.CHECKOUT_SSH_KEY }}
+          channel: ${{ github.event.inputs.channel }}
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Build iOS
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=ios --profile=${{ github.event.inputs.channel }} --build-logger-level=warn --local --output=App.ipa --non-interactive
+        working-directory: apps/expo
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Upload app to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
         with:
-          node-version: 20
-          cache: 'pnpm'
-  
-      - name: Install CLI
-        run: pnpm add -g eas-cli
-      
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build Golfy Alpha
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-local:development-store
-        working-directory: apps/expo
-        if: github.event.inputs.channel == 'development'
-      
-      - name: Build Golfy Beta
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-local:preview
-        working-directory: apps/expo
-        if: github.event.inputs.channel == 'preview'
-      
-      - name: Build Golfy
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} pnpm ios:eas-local:production
-        working-directory: apps/expo
-        if: github.event.inputs.channel == 'production'
-
+          app-path: apps/expo/App.ipa
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
