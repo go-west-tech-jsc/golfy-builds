@@ -14,7 +14,7 @@ on:
           - "production"
 
 jobs:
-  expo-updates:
+  build-android:
     runs-on: ubuntu-latest
 
     steps:
