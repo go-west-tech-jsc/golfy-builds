@@ -56,10 +56,3 @@ jobs:
       - name: Build Android
         run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=android --profile=${{ github.event.inputs.channel }} --build-logger-level=${{ github.event.inputs.build_logger_level }} --local --output=app-release.aab --non-interactive
         working-directory: apps/expo
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release
-          path: apps/expo/app-release.aab
-          retention-days: 3
