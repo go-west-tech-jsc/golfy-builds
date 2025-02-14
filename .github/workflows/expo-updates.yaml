@@ -1,4 +1,4 @@
-name: Build iOS
+name: Expo Updates
 
 on:
   workflow_dispatch:
@@ -12,10 +12,19 @@ on:
           - "development"
           - "preview"
           - "production"
+      platform:
+        type: choice
+        description: "Platform"
+        required: true
+        default: "all"
+        options:
+          - "all"
+          - "ios"
+          - "android"
 
 jobs:
-  build-ios:
-    runs-on: macos-latest
+  expo-updates:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -40,14 +49,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build iOS
-        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=ios --profile=${{ github.event.inputs.channel }} --build-logger-level=warn --local --output=App.ipa --non-interactive
+      - name: Expo Updates
+        run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas update --auto --environment=${{ github.event.inputs.channel }} --platform=${{ github.event.inputs.platform }} --clear-cache --non-interactive
         working-directory: apps/expo
-
-      - name: Upload app to TestFlight
-        uses: apple-actions/upload-testflight-build@v1
-        with:
-          app-path: apps/expo/App.ipa
-          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
