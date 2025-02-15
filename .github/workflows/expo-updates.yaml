@@ -25,6 +25,7 @@ on:
 jobs:
   expo-updates:
     runs-on: ubuntu-latest
+    if: ${{ github.repository == 'go-west-tech-jsc/golfy' && github.event_name != 'pull_request' }}
 
     steps:
       - name: Checkout
