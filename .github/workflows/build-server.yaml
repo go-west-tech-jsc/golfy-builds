@@ -1,0 +1,25 @@
+name: Build Server
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        type: choice
+        description: "Branch"
+        required: true
+        default: "develop"
+        options:
+          - "develop"
+          - "staging"
+          - "main"
+
+jobs:
+  build-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: go-west-tech-jsc/frappe-docker
+          ref: main
