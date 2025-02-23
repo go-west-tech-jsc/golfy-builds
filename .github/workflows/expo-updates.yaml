@@ -33,7 +33,7 @@ jobs:
         with:
           repository: ${{ secrets.CHECKOUT_REPOSITORY }}
           ref: ${{ github.event.inputs.channel == 'development' && 'develop' || github.event.inputs.channel == 'preview' && 'staging' || github.event.inputs.channel == 'production' && 'main' }}
-          # ssh-key: ${{ secrets.CHECKOUT_SSH_KEY }}
+          ssh-key: ${{ secrets.CHECKOUT_SSH_KEY }}
   
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
