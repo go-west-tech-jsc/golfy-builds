@@ -70,5 +70,5 @@ jobs:
           releaseFiles: "apps/expo/app-release.aab"
           serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ github.event.inputs.channel == 'development' && secrets.ANDROID_PACKAGE_DEVELOPMENT || github.event.inputs.channel == 'preview' && secrets.ANDROID_PACKAGE_PREVIEW || github.event.inputs.channel == 'production' && secrets.ANDROID_PACKAGE_PRODUCTION }}
-          track: "internal-testing"
+          track: "production"
           releaseName: ${{ env.RUNTIME_VERSION }}
