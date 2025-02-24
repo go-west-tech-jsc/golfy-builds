@@ -25,6 +25,11 @@ on:
           - "error"
           - "fatal"
           - "silent"
+      upload_artifact:
+        type: boolean
+        description: "Upload Artifact"
+        required: true
+        default: false
 
 jobs:
   build-android:
@@ -66,6 +71,7 @@ jobs:
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
+        if: ${{ github.event.inputs.upload_artifact }}
         with:
           name: app-release
           path: apps/expo/app-release.aab
