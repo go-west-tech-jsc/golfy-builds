@@ -53,7 +53,22 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+      
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' apps/expo/package.json)
+          echo "RUNTIME_VERSION=v$VERSION" >> $GITHUB_ENV
 
       - name: Build Android
         run: EXPO_TOKEN=${{ secrets.EXPO_TOKEN }} eas build --platform=android --profile=${{ github.event.inputs.channel }} --build-logger-level=${{ github.event.inputs.build_logger_level }} --local --output=app-release.aab --non-interactive
         working-directory: apps/expo
+
+      - name: Upload app to Play Console
+        uses: r0adkll/upload-google-play@v1
+        with:
+          releaseFiles: "apps/expo/app-release.aab"
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_SERVICE_ACCOUNT_JSON }}
+          packageName: ${{ github.event.inputs.channel == 'development' && secrets.ANDROID_PACKAGE_DEVELOPMENT || github.event.inputs.channel == 'preview' && secrets.ANDROID_PACKAGE_PREVIEW || github.event.inputs.channel == 'production' && secrets.ANDROID_PACKAGE_PRODUCTION }}
+          track: "internal-testing"
+          releaseName: ${{ env.RUNTIME_VERSION }}
