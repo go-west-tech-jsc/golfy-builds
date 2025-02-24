@@ -80,7 +80,7 @@ jobs:
       - name: Upload app to Play Console
         uses: r0adkll/upload-google-play@v1
         with:
-          releaseFiles: "apps/expo/app-release.aab"
+          releaseFiles: apps/expo/app-release.aab
           serviceAccountJsonPlainText: ${{ secrets.PLAY_CONSOLE_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ github.event.inputs.channel == 'development' && secrets.ANDROID_PACKAGE_DEVELOPMENT || github.event.inputs.channel == 'preview' && secrets.ANDROID_PACKAGE_PREVIEW || github.event.inputs.channel == 'production' && secrets.ANDROID_PACKAGE_PRODUCTION }}
           track: ${{ github.event.inputs.channel == 'development' && 'internal-testing' || github.event.inputs.channel == 'preview' && 'open-testing' || github.event.inputs.channel == 'production' && 'production' }}
