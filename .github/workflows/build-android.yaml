@@ -85,4 +85,5 @@ jobs:
           packageName: ${{ github.event.inputs.channel == 'development' && secrets.ANDROID_PACKAGE_DEVELOPMENT || github.event.inputs.channel == 'preview' && secrets.ANDROID_PACKAGE_PREVIEW || github.event.inputs.channel == 'production' && secrets.ANDROID_PACKAGE_PRODUCTION }}
           track: ${{ github.event.inputs.channel == 'development' && 'internal' || github.event.inputs.channel == 'preview' && 'beta' || github.event.inputs.channel == 'production' && 'production' }}
           releaseName: ${{ env.RUNTIME_VERSION }}
-          status: ${{ github.event.inputs.channel == 'development' && 'draft' || github.event.inputs.channel == 'preview' && 'draft' || github.event.inputs.channel == 'production' && 'completed' }}
+          status: 'draft'
+          # status: ${{ github.event.inputs.channel == 'development' && 'draft' || github.event.inputs.channel == 'preview' && 'draft' || github.event.inputs.channel == 'production' && 'completed' }}
