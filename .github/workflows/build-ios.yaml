@@ -29,7 +29,7 @@ on:
 jobs:
   build-ios:
     runs-on: macos-latest
-    if: ${{ github.repository == 'go-west-tech-jsc/golfy' && github.event_name != 'pull_request' }}
+    if: ${{ github.repository == 'go-west-tech-jsc/golfy-builds' && github.event_name != 'pull_request' }}
 
     steps:
       - name: Checkout
