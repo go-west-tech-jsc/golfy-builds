@@ -34,7 +34,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'go-west-tech-jsc/golfy' && github.event_name != 'pull_request' }}
+    if: ${{ github.repository == 'go-west-tech-jsc/golfy-builds' && github.event_name != 'pull_request' }}
 
     steps:
       - name: Checkout
