@@ -28,7 +28,7 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macos-latest
+    runs-on: macos-15
     if: ${{ github.repository == 'go-west-tech-jsc/golfy-builds' && github.event_name != 'pull_request' }}
 
     steps:
